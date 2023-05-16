@@ -1,6 +1,6 @@
 {
-	"name": "iggs-rx-utils",
-	"version": "1.0.3",
+	"name": "@alexrr2iggs/iggs-rx-utils",
+	"version": "1.0.4",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
@@ -20,7 +20,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/alexrr2iggs/iggs-rx-utils.git"
+		"url": "git://github.com/alexrr2iggs/iggs-rx-utils.git"
 	},
 	"publishConfig": {
 		"registry": "https://npm.pkg.github.com"
