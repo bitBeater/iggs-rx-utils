@@ -1,0 +1,21 @@
+{
+	"name": "iggs-rx-utils",
+	"version": "1.0.1",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "tsc",
+		"test": "node --test --nolazy  -r /lib/node_modules/ts-node/register /home/alex/repo/alexrr2iggs/libs/iggs-rx-utils/tests/**/*"
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/node": "^20.1.5",
+		"prettier": "^2.8.8",
+		"rxjs": "^7.8.1",
+		"typedoc": "^0.24.7"
+	},
+	"dependencies": {
+		"iggs-utils": "^1.2.13"
+	}
+}
