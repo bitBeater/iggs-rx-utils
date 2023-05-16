@@ -17,5 +17,12 @@
 	},
 	"dependencies": {
 		"iggs-utils": "^1.2.13"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/alexrr2iggs/iggs-rx-utils.git"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
 	}
 }
