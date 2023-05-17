@@ -12,10 +12,10 @@
 	"devDependencies": {
 		"@types/node": "^20.1.5",
 		"prettier": "^2.8.8",
-		"rxjs": "^7.8.1",
 		"typedoc": "^0.24.7"
 	},
 	"dependencies": {
+		"rxjs": "^7.8.1",
 		"iggs-utils": "^1.2.15"
 	},
 	"repository": {
