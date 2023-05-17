@@ -118,3 +118,4 @@ function getBuffLen(cacheArg, bufferLen = 1) {
         return cacheArg.bufferLen;
     return bufferLen !== null && bufferLen !== void 0 ? bufferLen : 1;
 }
+//# sourceMappingURL=cache.js.map
