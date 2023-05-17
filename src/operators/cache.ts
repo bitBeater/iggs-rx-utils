@@ -1,17 +1,15 @@
 import { collection } from 'iggs-utils';
 import { MonoTypeOperatorFunction, Observable, Subject, Subscriber, Timestamp, finalize, takeUntil, timestamp } from 'rxjs';
-import { TakeSubject } from '../subjects/TakeSubject';
 
 type ObsOrMillis = Observable<unknown> | number;
 type CacheArgType = ObsOrMillis | { refreshObs: Observable<unknown>; refreshMillis: number; bufferLen?: number } | { refreshObs: Observable<unknown>; bufferLen?: number } | { refreshMillis: number; bufferLen?: number };
 
 export function cache<T>(cacheArg: CacheArgType, bufferLen = 1): MonoTypeOperatorFunction<T> {
-	const destroy$ = new TakeSubject();
 	const refresh$ = refreshToObservable(cacheArg);
 	const refreshMillis = refreshToMillis(cacheArg);
 
 	let source: Observable<T>;
-	const valuesBuffer = new collection.EvictingDequeue<Timestamp<T>>(bufferLen, []);
+	const valuesBuffer = new collection.EvictingDequeue<Timestamp<T>>(bufferLen);
 	let incompleteSubscribers: Subscriber<T>[] = [];
 
 	let subscribedToSource = false;
@@ -41,7 +39,6 @@ export function cache<T>(cacheArg: CacheArgType, bufferLen = 1): MonoTypeOperato
 			.pipe(
 				timestamp(),
 				takeUntil(refresh$),
-				takeUntil(destroy$),
 				finalize(() => (incompleteSubscribers = []))
 			)
 			.subscribe({
@@ -62,12 +59,6 @@ export function cache<T>(cacheArg: CacheArgType, bufferLen = 1): MonoTypeOperato
 	};
 
 	refresh$.subscribe({ next: () => subscribeToSource() });
-
-	destroy$.subscribe({
-		complete: () => {
-			refresh$.complete();
-		},
-	});
 
 	return (_source: Observable<T>) => {
 		source = _source;

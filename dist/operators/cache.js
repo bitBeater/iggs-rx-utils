@@ -3,13 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.cache = void 0;
 const iggs_utils_1 = require("iggs-utils");
 const rxjs_1 = require("rxjs");
-const TakeSubject_1 = require("../subjects/TakeSubject");
 function cache(cacheArg, bufferLen = 1) {
-    const destroy$ = new TakeSubject_1.TakeSubject();
     const refresh$ = refreshToObservable(cacheArg);
     const refreshMillis = refreshToMillis(cacheArg);
     let source;
-    const valuesBuffer = new iggs_utils_1.collection.EvictingDequeue(bufferLen, []);
+    const valuesBuffer = new iggs_utils_1.collection.EvictingDequeue(bufferLen);
     let incompleteSubscribers = [];
     let subscribedToSource = false;
     let subscribingToSource = false;
@@ -32,7 +30,7 @@ function cache(cacheArg, bufferLen = 1) {
         subscribedToSource = subscribingToSource = true;
         srcComplete = false;
         source
-            .pipe((0, rxjs_1.timestamp)(), (0, rxjs_1.takeUntil)(refresh$), (0, rxjs_1.takeUntil)(destroy$), (0, rxjs_1.finalize)(() => (incompleteSubscribers = [])))
+            .pipe((0, rxjs_1.timestamp)(), (0, rxjs_1.takeUntil)(refresh$), (0, rxjs_1.finalize)(() => (incompleteSubscribers = [])))
             .subscribe({
             next: v => {
                 subscribingToSource = false;
@@ -50,11 +48,6 @@ function cache(cacheArg, bufferLen = 1) {
         });
     };
     refresh$.subscribe({ next: () => subscribeToSource() });
-    destroy$.subscribe({
-        complete: () => {
-            refresh$.complete();
-        },
-    });
     return (_source) => {
         source = _source;
         return destWrap;
