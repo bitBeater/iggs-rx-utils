@@ -3,7 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.beforeComplete = void 0;
 const rxjs_1 = require("rxjs");
 /**
+ * @category Operators
  * @description This operator will execute the given argument before completing the source observable.
+ *				 The argument can be a Promise, an Observable, a function that returns a Promise or an Observable or a simple function.
+ *				 </r>
+ *				  <p class="very-important">If the argument is an Observable or a function that returns an Observable, the returned Observable will complete only when the argument Observable completes</p>
  * @example ### Example with a function that returns a Promise
  * ```ts
  * const promise = new Promise((resolve) => {
@@ -65,8 +69,8 @@ const rxjs_1 = require("rxjs");
  * @param arg : Promise | Observable | (() => void) | (() => Promise) | (() => Observable)
  * @returns A function that returns an Observable that will execute the given argument before completing the source observable.
  */
-const beforeComplete = (arg) => (source) => new rxjs_1.Observable(subscriber => {
-    const subscription = source.subscribe({
+const beforeComplete = (arg) => src => new rxjs_1.Observable(subscriber => {
+    const subscription = src.subscribe({
         next: v => subscriber.next(v),
         error: err => subscriber.error(err),
         complete() {

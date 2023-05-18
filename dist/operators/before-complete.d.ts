@@ -1,7 +1,11 @@
 import { MonoTypeOperatorFunction, Observable } from 'rxjs';
-type BeforeCompleteArgType = Promise<any> | Observable<any> | (() => void) | (() => Promise<any>) | (() => Observable<any>);
+type BeforeCompleteArgType = Promise<unknown> | Observable<unknown> | (() => void) | (() => Promise<unknown>) | (() => Observable<unknown>);
 /**
+ * @category Operators
  * @description This operator will execute the given argument before completing the source observable.
+ *				 The argument can be a Promise, an Observable, a function that returns a Promise or an Observable or a simple function.
+ *				 </r>
+ *				  <p class="very-important">If the argument is an Observable or a function that returns an Observable, the returned Observable will complete only when the argument Observable completes</p>
  * @example ### Example with a function that returns a Promise
  * ```ts
  * const promise = new Promise((resolve) => {
@@ -63,6 +67,6 @@ type BeforeCompleteArgType = Promise<any> | Observable<any> | (() => void) | (()
  * @param arg : Promise | Observable | (() => void) | (() => Promise) | (() => Observable)
  * @returns A function that returns an Observable that will execute the given argument before completing the source observable.
  */
-export declare const beforeComplete: (arg: BeforeCompleteArgType) => MonoTypeOperatorFunction<any>;
+export declare const beforeComplete: <T>(arg: BeforeCompleteArgType) => MonoTypeOperatorFunction<T>;
 export {};
 //# sourceMappingURL=before-complete.d.ts.map

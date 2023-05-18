@@ -14,7 +14,7 @@ describe('TakeSubject', () => {
 			},
 			complete: () => {
 				completed = true;
-			}
+			},
 		});
 
 		setTimeout(() => {
@@ -36,7 +36,7 @@ describe('TakeSubject', () => {
 			},
 			complete: () => {
 				completed = true;
-			}
+			},
 		});
 		setTimeout(() => {
 			takeSubject.next();

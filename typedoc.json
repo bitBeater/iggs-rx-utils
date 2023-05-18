@@ -3,6 +3,7 @@
 	"out": "docs",
 	"readme": "README.md",
 	"includeVersion": true,
+	"customCss": "assets/doc-styles.css",
 	"markedOptions": {
 		"gfm": true,
 		"breaks": true
