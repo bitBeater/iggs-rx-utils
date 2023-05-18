@@ -5,12 +5,13 @@ import { beforeComplete } from '../../src';
 
 describe('Before Complete', () => {
 	it('the callback provided to beforeComplete should be called before complete', async () => {
-		let runnedBeforeComplete = false;
-		of(1)
-			.pipe(beforeComplete(() => (runnedBeforeComplete = true)))
+
+		const values: number[] = [];
+		of(1, 2, 3)
+			.pipe(beforeComplete(() => values.push(4)))
 			.subscribe({
-				next: () => assert.equal(runnedBeforeComplete, false),
-				complete: () => assert.equal(runnedBeforeComplete, true),
+				next: v => values.push(v),
+				complete: () => assert.deepEqual(values, [1, 2, 3, 4])
 			});
 	});
 });
