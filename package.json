@@ -1,11 +1,12 @@
 {
 	"name": "@alexrr2iggs/iggs-rx-utils",
-	"version": "1.0.9",
+	"version": "1.0.10",
 	"description": "",
 	"main": "dist/index.js",
 	"scripts": {
 		"build": "tsc",
-		"test": "node --test --nolazy  -r /lib/node_modules/ts-node/register /home/alex/repo/alexrr2iggs/libs/iggs-rx-utils/tests/**/*"
+		"test": "node --test --nolazy  -r /lib/node_modules/ts-node/register /home/alex/repo/alexrr2iggs/libs/iggs-rx-utils/tests/**/*",
+		"mkdoc": "npx typedoc --options typedoc.json"
 	},
 	"author": "",
 	"license": "ISC",
