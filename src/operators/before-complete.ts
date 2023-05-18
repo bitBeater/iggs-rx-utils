@@ -7,7 +7,7 @@ type BeforeCompleteArgType = Promise<unknown> | Observable<unknown> | (() => voi
  * @description This operator will execute the given argument before completing the source observable.
  *				 The argument can be a Promise, an Observable, a function that returns a Promise or an Observable or a simple function.
  *				 </r>
- *				  <p class="very-important">If the argument is an Observable or a function that returns an Observable, the returned Observable will complete only when the argument Observable completes</p>
+ *				  *<h class="very-important">If the argument is an Observable or a function that returns an Observable, the returned Observable will complete only when the argument Observable completes</h>*
  * @example ### Example with a function that returns a Promise
  * ```ts
  * const promise = new Promise((resolve) => {
@@ -71,32 +71,32 @@ type BeforeCompleteArgType = Promise<unknown> | Observable<unknown> | (() => voi
  */
 export const beforeComplete =
 	<T>(arg: BeforeCompleteArgType): MonoTypeOperatorFunction<T> =>
-	src =>
-		new Observable<T>(subscriber => {
-			const subscription = src.subscribe({
-				next: v => subscriber.next(v),
-				error: err => subscriber.error(err),
-				complete() {
-					const manageArg = (arg: BeforeCompleteArgType) => {
-						if (typeof arg === 'function') {
-							const argRetVal = arg();
-							if (argRetVal instanceof Promise || argRetVal instanceof Observable) return manageArg(argRetVal);
-							subscriber.complete();
-						}
+		src =>
+			new Observable<T>(subscriber => {
+				const subscription = src.subscribe({
+					next: v => subscriber.next(v),
+					error: err => subscriber.error(err),
+					complete() {
+						const manageArg = (arg: BeforeCompleteArgType) => {
+							if (typeof arg === 'function') {
+								const argRetVal = arg();
+								if (argRetVal instanceof Promise || argRetVal instanceof Observable) return manageArg(argRetVal);
+								subscriber.complete();
+							}
 
-						if (arg instanceof Promise) arg.catch(err => subscriber.error(err)).then(() => subscriber.complete());
+							if (arg instanceof Promise) arg.catch(err => subscriber.error(err)).then(() => subscriber.complete());
 
-						if (arg instanceof Observable)
-							arg.subscribe({
-								next: () => {},
-								error: err => subscriber.error(err),
-								complete: () => subscriber.complete(),
-							});
-					};
+							if (arg instanceof Observable)
+								arg.subscribe({
+									next: () => { },
+									error: err => subscriber.error(err),
+									complete: () => subscriber.complete(),
+								});
+						};
 
-					manageArg(arg);
-				},
+						manageArg(arg);
+					},
+				});
+
+				return () => subscription.unsubscribe();
 			});
-
-			return () => subscription.unsubscribe();
-		});
